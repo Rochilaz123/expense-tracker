@@ -19,7 +19,8 @@ def get_expense_category():
     """
     while True:
         print(Fore.WHITE + 'Please choose a number for one of the following categories:\n')
-        print(Fore.BLUE + '1 - Food & Drink \n2 - Entertainment \n3 - Travel \n4 - Basics and Hygiene \n5 - Extras\n')
+        print(Fore.BLUE + '1 - Food & Drink \n2 - Entertainment \n3 - Travel')
+        print(Fore.BLUE + '4 - Basics and Hygiene\n5 - Extras\n')
         
         category = input(Fore.WHITE + "Enter category number: " )
         
@@ -28,7 +29,6 @@ def get_expense_category():
 
     return category
     
-
 
 def validate_expense_category(data):
     """
@@ -52,13 +52,34 @@ def get_expense_value():
     """
     Get the user to enter the value of the expense.
     """
-    print(Fore.WHITE + '\nPlease enter the value of the expense:\n')
-    print(Fore.BLUE + 'example: 12.34 or 5.00\n')
-    
-    expense = input(Fore.WHITE + "Enter expense value: " )
-    
+    while True:
+        print(Fore.WHITE + '\nPlease enter the value of the expense:\n')
+        print(Fore.BLUE + 'example: 12.34 or 5.00\n')
+        
+        expense = input(Fore.WHITE + "Enter expense value: ")
+
+        if validate_expense_value(expense):
+            break
+
     return expense
 
+def validate_expense_value(data):
+    """
+    Inside the try converts data entered into a float,
+    Raises ValueError if the data entered can't be converted
+    into an ifloat, or does not have exactly 2 decimal places.
+    """
+    try:
+        float_data = float(data) 
+        if len(str(float_data).split('.')[1]) != 2:
+            raise ValueError(
+                f"Please enter a number to 2 decimal places"
+            )
+    except ValueError as e:
+        print(f"Invalid data entered: {e}.\n")
+        return False
+
+    return True
 
 def main():
     category = get_expense_category()
