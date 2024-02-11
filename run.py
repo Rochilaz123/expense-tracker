@@ -1,4 +1,5 @@
 import gspread
+import datetime
 from google.oauth2.service_account import Credentials
 from colorama import Fore
 
@@ -81,8 +82,17 @@ def validate_expense_value(data):
 
     return True
 
+def get_expense_date():
+
+    now = datetime.datetime.now()
+    date = now.strftime("%x")
+    return date
+
+
+
 def main():
     category = get_expense_category()
     expense = get_expense_value()
+    get_expense_date()
 
 main()
