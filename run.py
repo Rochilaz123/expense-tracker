@@ -125,7 +125,27 @@ def get_total_left(sheet):
 
     return total_left
 
+def update_total_left(total_left,expense,worksheet):
+    """
+    Calculate the total left after this expense was added,
+    and update the spreadsheet.
+    """
+    print("Calculating total left...")
+    new_expense = float(expense)
+    last_total_left = float(total_left)
+    new_total_left = last_total_left - new_expense
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    last_row = len(worksheet_to_update.get_all_values())
+    print("Updating total left...")
+    worksheet_to_update.update_cell(last_row, 7, new_total_left)
+    print("Total left updated.\n")
+    print(f"The total you have left to spend this month is {new_total_left}")
+    
+
 def main():
+    """
+    Run all program functions.
+    """
     category = get_expense_category()
     expense = get_expense_value()
     date = get_expense_date()
@@ -137,6 +157,8 @@ def main():
     update_sheet(month,expense,category)
     print("Expense value added.\n")
     total_left = get_total_left(month)
+    update_total_left(total_left,expense,month)
+
 
 main()
 
