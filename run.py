@@ -21,7 +21,7 @@ def get_expense_category():
     while True:
         print(Fore.WHITE + 'Please choose a number for one of the following categories:\n')
         print(Fore.BLUE + '1 - Food & Drink \n2 - Entertainment \n3 - Travel')
-        print(Fore.BLUE + '4 - Basics and Hygiene\n5 - Extras\n')
+        print(Fore.BLUE + '4 - Basics and Hygiene\n5 - Other\n')
         
         category = input(Fore.WHITE + "Enter category number: " )
         
@@ -139,8 +139,26 @@ def update_total_left(total_left,expense,worksheet):
     print("Updating total left...")
     worksheet_to_update.update_cell(last_row, 7, new_total_left)
     print("Total left updated.\n")
-    print(f"The total you have left to spend this month is {new_total_left}")
-    
+    print(f"The total you have left to spend this month is £{new_total_left}")
+
+
+def calculate_category_total(worksheet,category):
+    """
+    Calculate the total of the category of the new expense, and inform the
+    user how much they have spent for that category this month.
+    """
+    sheet = SHEET.worksheet(worksheet)
+    category_to_total = int(category) + 1
+    values_list = sheet.col_values(category_to_total)
+    float_values_list = []
+    for x in values_list[1:]:
+        if x == '':
+            x = 0
+        float_values_list.append(float(x))
+    category_total = 0
+    for x in float_values_list:
+        category_total = category_total + x
+    print(f"The total you have spent on this category this month is £{category_total}")
 
 def main():
     """
@@ -158,6 +176,7 @@ def main():
     print("Expense value added.\n")
     total_left = get_total_left(month)
     update_total_left(total_left,expense,month)
+    calculate_category_total(month, category)
 
 
 main()
