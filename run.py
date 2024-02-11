@@ -115,6 +115,15 @@ def update_sheet(worksheet,data,category=0):
     worksheet_to_update.update_cell(last_row + 1, column, data)
     
 
+def get_total_left(sheet):
+    """
+    Get the value of the total left after the last expense.
+    """
+    worksheet = SHEET.worksheet(sheet)
+    last_row = len(worksheet.get_all_values())
+    total_left = worksheet.cell(last_row-1,7).value
+
+    return total_left
 
 def main():
     category = get_expense_category()
@@ -127,6 +136,7 @@ def main():
     print("Adding expense value...")
     update_sheet(month,expense,category)
     print("Expense value added.\n")
+    total_left = get_total_left(month)
 
 main()
 
