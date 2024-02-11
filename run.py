@@ -83,16 +83,31 @@ def validate_expense_value(data):
     return True
 
 def get_expense_date():
-
+    """
+    Get the date the expense is entered.
+    """
     now = datetime.datetime.now()
     date = now.strftime("%x")
     return date
+
+
+def get_month():
+    """
+    Get the name of the month the expense is entered, to choose which sheet 
+    to add the data to.
+    """
+    now = datetime.datetime.now()
+    month = now.strftime("%B")
+    return month
 
 
 
 def main():
     category = get_expense_category()
     expense = get_expense_value()
-    get_expense_date()
+    date = get_expense_date()
+    month = get_month()
+    
 
 main()
+
