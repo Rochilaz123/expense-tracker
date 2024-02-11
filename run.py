@@ -41,10 +41,10 @@ def validate_expense_category(data):
         int(data) 
         if int(data) < 1 or int(data) > 5:
             raise ValueError(
-                f"Expected a number between 1 and 5, you provided {data}"
+                Fore.RED + f"Expected a number between 1 and 5, you provided {data}"
             )
     except ValueError as e:
-        print(f"Invalid category: {e}, please try again.\n")
+        print(Fore.RED + f"Invalid category: {e}, please try again.\n")
         return False
 
     return True
@@ -75,10 +75,10 @@ def validate_expense_value(data):
         decimal_part = str(float_data).split('.')
         if len(decimal_part) == 1 or (len(decimal_part) == 2 and len(decimal_part[1]) > 2):
             raise ValueError(
-                f"Please enter a number with exactly 2 decimal places"
+                Fore.RED + f"Please enter a number with exactly 2 decimal places"
             )
     except ValueError as e:
-        print(f"Invalid data entered: {e}.\n")
+        print(Fore.RED + f"Invalid data entered: {e}.\n")
         return False
 
     return True
@@ -131,18 +131,18 @@ def update_total_left(total_left,expense,worksheet):
     Calculate the total left after this expense was added,
     and update the spreadsheet.
     """
-    print("Calculating total left...")
+    print(Fore.CYAN + "Calculating total left...")
     new_expense = float(expense)
     last_total_left = float(total_left)
     new_total_left = last_total_left - new_expense
     worksheet_to_update = SHEET.worksheet(worksheet)
     last_row = len(worksheet_to_update.get_all_values())
-    print("Updating total left...")
+    print(Fore.CYAN + "Updating total left...")
     worksheet_to_update.update_cell(last_row, 7, new_total_left)
-    print("Total left updated.\n")
-    print(f"The total you have left to spend this month is £{round(new_total_left,2)}")
+    print(Fore.CYAN + "Total left updated.\n")
+    print(Fore.YELLOW + f"The total you have left to spend this month is £{round(new_total_left,2)}\n")
     if new_total_left <= 0:
-        print(f"You have spent more than your budget for this month.")
+        print(Fore.RED + f"You have spent more than your budget for this month.")
 
 
 def calculate_category_total(worksheet,category):
@@ -161,7 +161,7 @@ def calculate_category_total(worksheet,category):
     category_total = 0
     for x in float_values_list:
         category_total = category_total + x
-    print(f"The total you have spent on this category this month is £{round(category_total,2)}")
+    print(Fore.YELLOW + f"The total you have spent on this category this month is £{round(category_total,2)}\n")
 
 def main():
     """
@@ -171,12 +171,12 @@ def main():
     expense = get_expense_value()
     date = get_expense_date()
     month = get_month()
-    print("Adding expense date...")
+    print(Fore.GREEN + "\nAdding expense date...")
     update_sheet(month,date)
-    print("Expense date added.\n")
-    print("Adding expense value...")
+    print(Fore.GREEN + "Expense date added.\n")
+    print(Fore.MAGENTA + "Adding expense value...")
     update_sheet(month,expense,category)
-    print("Expense value added.\n")
+    print(Fore.MAGENTA + "Expense value added.\n")
     total_left = get_total_left(month)
     update_total_left(total_left,expense,month)
     calculate_category_total(month, category)
