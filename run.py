@@ -57,7 +57,7 @@ def get_expense_value():
         print(Fore.WHITE + '\nPlease enter the value of the expense:\n')
         print(Fore.BLUE + 'example: 12.34 or 5.00\n')
         
-        expense = input(Fore.WHITE + "Enter expense value: ")
+        expense = input(Fore.WHITE + "Enter expense value: £")
 
         if validate_expense_value(expense):
             break
@@ -71,10 +71,11 @@ def validate_expense_value(data):
     into an ifloat, or does not have exactly 2 decimal places.
     """
     try:
-        float_data = float(data) 
-        if len(str(float_data).split('.')[1]) != 2:
+        float_data = float(data)
+        decimal_part = str(float_data).split('.')
+        if len(decimal_part) == 1 or (len(decimal_part) == 2 and len(decimal_part[1]) > 2):
             raise ValueError(
-                f"Please enter a number to 2 decimal places"
+                f"Please enter a number with exactly 2 decimal places"
             )
     except ValueError as e:
         print(f"Invalid data entered: {e}.\n")
@@ -139,7 +140,9 @@ def update_total_left(total_left,expense,worksheet):
     print("Updating total left...")
     worksheet_to_update.update_cell(last_row, 7, new_total_left)
     print("Total left updated.\n")
-    print(f"The total you have left to spend this month is £{new_total_left}")
+    print(f"The total you have left to spend this month is £{round(new_total_left,2)}")
+    if new_total_left <= 0:
+        print(f"You have spent more than your budget for this month.")
 
 
 def calculate_category_total(worksheet,category):
@@ -158,7 +161,7 @@ def calculate_category_total(worksheet,category):
     category_total = 0
     for x in float_values_list:
         category_total = category_total + x
-    print(f"The total you have spent on this category this month is £{category_total}")
+    print(f"The total you have spent on this category this month is £{round(category_total,2)}")
 
 def main():
     """
