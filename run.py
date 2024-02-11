@@ -101,13 +101,32 @@ def get_month():
     return month
 
 
+def update_sheet(worksheet,data,category=0):
+    """
+    Receives the data to insert into the relevant worksheet
+    and updates the relevant worksheet with the data.
+    """
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    column = int(category) + 1
+    if category == 0:
+        last_row = len(worksheet_to_update.get_all_values())
+    else:
+        last_row = len(worksheet_to_update.get_all_values())-1
+    worksheet_to_update.update_cell(last_row + 1, column, data)
+    
+
 
 def main():
     category = get_expense_category()
     expense = get_expense_value()
     date = get_expense_date()
     month = get_month()
-    
+    print("Adding expense date...")
+    update_sheet(month,date)
+    print("Expense date added.\n")
+    print("Adding expense value...")
+    update_sheet(month,expense,category)
+    print("Expense value added.\n")
 
 main()
 
