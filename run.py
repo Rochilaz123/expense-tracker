@@ -21,7 +21,7 @@ def get_expense_category():
         print(Fore.WHITE + 'Please choose a number for one of the following categories:\n')
         print(Fore.BLUE + '1 - Food & Drink \n2 - Entertainment \n3 - Travel \n4 - Basics and Hygiene \n5 - Extras\n')
         
-        category = input(Fore.WHITE + "Enter category number:" )
+        category = input(Fore.WHITE + "Enter category number: " )
         
         if validate_expense_category(category):
             break
@@ -48,9 +48,20 @@ def validate_expense_category(data):
 
     return True
 
+def get_expense_value():
+    """
+    Get the user to enter the value of the expense.
+    """
+    print(Fore.WHITE + '\nPlease enter the value of the expense:\n')
+    print(Fore.BLUE + 'example: 12.34 or 5.00\n')
+    
+    expense = input(Fore.WHITE + "Enter expense value: " )
+    
+    return expense
+
 
 def main():
     category = get_expense_category()
-    
+    expense = get_expense_value()
 
 main()
