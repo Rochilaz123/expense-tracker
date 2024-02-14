@@ -169,12 +169,29 @@ def calculate_category_total(worksheet,category):
      f"The total you have spent on this category")
     print(f"this month is £{round(category_total,2)}\n")
 
+
+"""def user_exit_option():
+    answer = input("Would you like to add another expense?(y/n) ")
+    lower(answer)"""
+
+
+
+"""def validate_user_exit_option():
+    try:
+        if answer == "y"
+            return True
+
+    except ValueError as e:
+        print(Fore.RED + f"Invalid data entered: {e}.\n")
+        return False"""
+
 def main():
     """
-    Run all program functions.
+    Run all program functions. Once all functions have run, gives user 
+    option to add another expense or to exit.
     """
-    answer = "y"
-    while answer == "y":
+    answer = "+"
+    while answer == "+":
         category = get_expense_category()
         expense = get_expense_value()
         date = get_expense_date()
@@ -188,7 +205,11 @@ def main():
         total_left = get_total_left(month)
         update_total_left(total_left,expense,month)
         calculate_category_total(month, category)
-        answer = input("Would you like to add another expense?(y/n) ")
+        answer = input('Press + to add another expense, press enter to exit:')
+        if answer == "+":
+            continue
+        else:
+            break
+
 
 main()
-
