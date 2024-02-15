@@ -11,7 +11,74 @@ SCOPE = [
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
-SHEET = GSPREAD_CLIENT.open('expense-tracker')
+
+
+class ExpenseSpreadsheet:
+    sheet = None
+    def __init__(self, spreadsheet_name):
+        self.sheet = GSPREAD_CLIENT.open(spreadsheet_name)
+
+    def get_total_left(self, worksheet_name):
+        """
+        Get the value of the total left after the last expense.
+        """
+        worksheet = self.sheet.worksheet(worksheet_name)
+        last_row = len(worksheet.get_all_values())
+        total_left = worksheet.cell(last_row-1, 7).value
+
+        return total_left
+
+
+    def calculate_category_total(self, worksheet_name, category):
+        """
+        Calculate the total of the category of the new expense, and 
+        inform the user how much they have spent for that category 
+        this month.
+        """
+        worksheet = self.sheet.worksheet(worksheet_name)
+        category_to_total = int(category) + 1
+        values_list = worksheet.col_values(category_to_total)
+        category_total = 0
+        for x in values_list[1:]:
+            if x == '':
+                continue
+            category_total = category_total + float(x)
+        
+        return category_total
+
+    def update_total_left(self, total_left, expense, worksheet_name):
+        """
+        Calculate the total left after this expense was added,
+        and update the spreadsheet.
+        """
+        print(Fore.CYAN + "Calculating total left...")
+        new_expense = float(expense)
+        last_total_left = float(total_left)
+        new_total_left = last_total_left - new_expense
+        worksheet = self.sheet.worksheet(worksheet_name)
+        last_row = len(worksheet.get_all_values())
+        print(Fore.CYAN + "Updating total left...")
+        worksheet.update_cell(last_row, 7, new_total_left)
+        print(Fore.CYAN + "Total left updated.\n")
+        print(Fore.YELLOW +
+            f"The total you have left to spend this month is" +
+            f" £{round(new_total_left, 2)}\n")
+        if new_total_left <= 0:
+            print(Fore.RED +
+                f"You have spent more than your budget for this month.")
+
+    def update_sheet(self, worksheet_name, data, category=0):
+        """
+        Receives the data to insert into the relevant worksheet
+        and updates the relevant worksheet with the data.
+        """
+        worksheet = self.sheet.worksheet(worksheet_name)
+        column = int(category) + 1
+        if category == 0:
+            last_row = len(worksheet.get_all_values())
+        else:
+            last_row = len(worksheet.get_all_values())-1
+        worksheet.update_cell(last_row + 1, column, data)
 
 
 def get_expense_category():
@@ -101,78 +168,15 @@ def get_expense_date():
 
 def get_month():
     """
-    Get the name of the month the expense is entered, to choose which sheet
-    to add the data to.
+    Get the name of the month the expense is entered, to choose 
+    which sheet to add the data to.
     """
     now = datetime.datetime.now()
     month = now.strftime("%B")
     return month
 
 
-def update_sheet(worksheet, data, category=0):
-    """
-    Receives the data to insert into the relevant worksheet
-    and updates the relevant worksheet with the data.
-    """
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    column = int(category) + 1
-    if category == 0:
-        last_row = len(worksheet_to_update.get_all_values())
-    else:
-        last_row = len(worksheet_to_update.get_all_values())-1
-    worksheet_to_update.update_cell(last_row + 1, column, data)
 
-
-def get_total_left(sheet):
-    """
-    Get the value of the total left after the last expense.
-    """
-    worksheet = SHEET.worksheet(sheet)
-    last_row = len(worksheet.get_all_values())
-    total_left = worksheet.cell(last_row-1, 7).value
-
-    return total_left
-
-
-def update_total_left(total_left, expense, worksheet):
-    """
-    Calculate the total left after this expense was added,
-    and update the spreadsheet.
-    """
-    print(Fore.CYAN + "Calculating total left...")
-    new_expense = float(expense)
-    last_total_left = float(total_left)
-    new_total_left = last_total_left - new_expense
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    last_row = len(worksheet_to_update.get_all_values())
-    print(Fore.CYAN + "Updating total left...")
-    worksheet_to_update.update_cell(last_row, 7, new_total_left)
-    print(Fore.CYAN + "Total left updated.\n")
-    print(Fore.YELLOW +
-          f"The total you have left to spend this month is" +
-          f"£{round(new_total_left, 2)}\n")
-    if new_total_left <= 0:
-        print(Fore.RED +
-              f"You have spent more than your budget for this month.")
-
-
-def calculate_category_total(worksheet, category):
-    """
-    Calculate the total of the category of the new expense, and inform the
-    user how much they have spent for that category this month.
-    """
-    sheet = SHEET.worksheet(worksheet)
-    category_to_total = int(category) + 1
-    values_list = sheet.col_values(category_to_total)
-    category_total = 0
-    for x in values_list[1:]:
-        if x == '':
-            continue
-        category_total = category_total + float(x)
-
-    print(Fore.YELLOW +
-          f"The total you have spent on this category this month is " +
-          f" £{round(category_total, 2)}\n")
 
 
 def main():
@@ -181,20 +185,24 @@ def main():
     option to add another expense or to exit.
     """
     answer = "+"
+    spreadsheet = ExpenseSpreadsheet("expense-tracker")
     while answer == "+":
         category = get_expense_category()
         expense = get_expense_value()
         date = get_expense_date()
         month = get_month()
         print(Fore.GREEN + "\nAdding expense date...")
-        update_sheet(month, date)
+        spreadsheet.update_sheet(month, date)
         print(Fore.GREEN + "Expense date added.\n")
         print(Fore.MAGENTA + "Adding expense value...")
-        update_sheet(month, expense, category)
+        spreadsheet.update_sheet(month, expense, category)
         print(Fore.MAGENTA + "Expense value added.\n")
-        total_left = get_total_left(month)
-        update_total_left(total_left, expense, month)
-        calculate_category_total(month, category)
+        total_left = spreadsheet.get_total_left(month)
+        spreadsheet.update_total_left(total_left, expense, month)
+        category_total = spreadsheet.calculate_category_total(month, category)
+        print(Fore.YELLOW +
+              f"The total you have spent on this category this month is " +
+              f"£{round(category_total, 2)}\n")
         answer = input(Fore.WHITE + 
         'Press + to add another expense, press enter to exit:')
         if answer == "+":
