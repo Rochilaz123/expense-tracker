@@ -15,6 +15,7 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 
 class ExpenseSpreadsheet:
     sheet = None
+
     def __init__(self, spreadsheet_name):
         self.sheet = GSPREAD_CLIENT.open(spreadsheet_name)
 
@@ -28,11 +29,10 @@ class ExpenseSpreadsheet:
 
         return total_left
 
-
     def calculate_category_total(self, worksheet_name, category):
         """
-        Calculate the total of the category of the new expense, and 
-        inform the user how much they have spent for that category 
+        Calculate the total of the category of the new expense, and
+        inform the user how much they have spent for that category
         this month.
         """
         worksheet = self.sheet.worksheet(worksheet_name)
@@ -43,7 +43,6 @@ class ExpenseSpreadsheet:
             if x == '':
                 continue
             category_total = category_total + float(x)
-        
         return category_total
 
     def update_total_left(self, total_left, expense, worksheet_name):
@@ -61,11 +60,11 @@ class ExpenseSpreadsheet:
         worksheet.update_cell(last_row, 7, new_total_left)
         print(Fore.CYAN + "Total left updated.\n")
         print(Fore.YELLOW +
-            f"The total you have left to spend this month is" +
-            f" £{round(new_total_left, 2)}\n")
+              f"The total you have left to spend this month is" +
+              f" £{round(new_total_left, 2)}\n")
         if new_total_left <= 0:
             print(Fore.RED +
-                f"You have spent more than your budget for this month.")
+                  f"You have spent more than your budget for this month.")
 
     def update_sheet(self, worksheet_name, data, category=0):
         """
@@ -168,15 +167,12 @@ def get_expense_date():
 
 def get_month():
     """
-    Get the name of the month the expense is entered, to choose 
+    Get the name of the month the expense is entered, to choose
     which sheet to add the data to.
     """
     now = datetime.datetime.now()
     month = now.strftime("%B")
     return month
-
-
-
 
 
 def main():
@@ -203,8 +199,8 @@ def main():
         print(Fore.YELLOW +
               f"The total you have spent on this category this month is " +
               f"£{round(category_total, 2)}\n")
-        answer = input(Fore.WHITE + 
-        'Press + to add another expense, press enter to exit:')
+        answer = input(Fore.WHITE +
+                       'Press + to add another expense, press enter to exit:')
         if answer == "+":
             continue
         else:
