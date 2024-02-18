@@ -1,32 +1,63 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Expense Tracker
 
-Welcome,
+This Expense tracker is perfect for anyone on a monthly budget who wants to keep track of their spending.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
+It is very easy to use, requiring the user to input a number for one of the category options, and the value of the expense.
 
-## Reminders
+The program adds the expense to a spreadsheet for the relevant month dated for the day you add it, and then advises the user how much money they have left to spend that month, and how much they have spent on that particular category that month.
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+![Here is the live link to my website]()
 
-## Creating the Heroku app
+![Devices Mock-up](image link)
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
+## Features
 
-1. `heroku/python`
-2. `heroku/nodejs`
+![Screenshot]()
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
+### Existing Features
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+- User gets prompted to enter the required information to add the expense.
+- Input validation to handle an invalid response and displaying to the user a relevant error message and requesting another input with the correct data.
+- After the user adds an expense, they get asked if they would like to add another expense or exit the program.
+- If the user spends more than their monthly budget, they get notified after adding an expense.
 
-Connect your GitHub repository and deploy as normal.
+### Future Features
 
-## Constraints
+- Allow user an option of entering a different date for the expense.
+- Give the user the option of adding more spending money for the month.
+- Give the user the option of adding another category.
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+## Structure
 
----
+- I have decided to use a class to access my spreadsheet. Any instances where the program interacts with the spreadsheet, it utilises methods of the ExpenseSpreadsheet class.
+- I have used a main function to call all the funtions to run the program, and to give the user continuous feed back of what the program is doing.
 
-Happy coding!
+## Testing
+
+I have tested my code by doing the following:
+- Passed the code through a PEP8 linter and ensured there are no problems.
+- Given invalid inputs: letters instead of numbers, invalid numbers, empty inputs.
+- Tested in my local terminal (and in the Heroku terminl to ensure it functions correctly.)
+
+## Bugs
+
+### Solved Bugs
+
+- During testing, the functions that were accessing data from the spreadsheet were returning errors. I realised it was because i had formatted the spreadsheet to  include a currency sign. After removing that, the functions al worked.
+- The input requesting the value of the expense didn't register any zeros after the decimal point and gave an error. After changing the wording of the if statement, the validation started working correctly.
+
+### Remaining  Bugs
+
+- No bugs remaining
+
+### Validator Testing
+
+- PEP8
+    - No errors returned from https://pep8ci.herokuapp.com/
+
+## Deployment
+
+This project was deployed using Code Institutes mock terminal for Heroku.
+
+Steps for deployment:
+ - 
