@@ -90,7 +90,7 @@ def get_expense_category():
         print(Fore.BLUE + '1 - Food & Drink \n2 - Entertainment \n3 - Travel')
         print(Fore.BLUE + '4 - Basics and Hygiene\n5 - Other\n')
 
-        category = input(Fore.WHITE + "Enter category number: ")
+        category = input(Fore.WHITE + "Enter category number: \n")
 
         if validate_expense_category(category):
             break
@@ -126,7 +126,7 @@ def get_expense_value():
         print(Fore.WHITE + '\nPlease enter the value of the expense:\n')
         print(Fore.BLUE + 'example: 12.34 or 5.00\n')
 
-        expense = input(Fore.WHITE + "Enter expense value: £")
+        expense = input(Fore.WHITE + "Enter expense value: £\n")
 
         if validate_expense_value(expense):
             break
@@ -200,7 +200,7 @@ def main():
               f"The total you have spent on this category this month is " +
               f"£{round(category_total, 2)}\n")
         answer = input(Fore.WHITE +
-                       'Press + to add another expense, press enter to exit:')
+                       'Press + to add another expense, press enter to exit: \n')
         if answer == "+":
             continue
         else:
