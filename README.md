@@ -6,31 +6,31 @@ It is very easy to use, requiring the user to input a number for one of the cate
 
 The program adds the expense to a spreadsheet for the relevant month dated for the day you add it, and then advises the user how much money they have left to spend that month, and how much they have spent on that particular category that month.
 
-![Here is the live link to my website](https://expense-tracker-1-05b15e017258.herokuapp.com/)
+[Here is the live link to my website](https://expense-tracker-1-05b15e017258.herokuapp.com/)
 
-![Devices Mock-up](.readme-assets/devices-mockup.PNG)
+![Devices Mock-up](/readme-assets/devices-mockup.PNG)
 
 ## Features
 
-![screen print](.readme-assets/screenprint1.png)
+![screen print](/readme-assets/screenprint1.png)
 
 - Prompts user to enter the expense category, and then the expense value.
     - Clear instructions
     - Colored text for clear diferentiation between sections
 
-![screen print](.readme-assets/screenshot2.PNG)
+![screen print](/readme-assets/screenshot2.PNG)
 
 - Gives user constant clear feedback
 - Different colors seperates between different sections and makes it clearer for the user
 
-![screen print](.readme-assets/screenshot3.PNG)
+![screen print](/readme-assets/screenshot3.PNG)
 
 - Informs the user how much of their budget they have left to spend that month
 - Informs the user how much they have spent on the category of their latest expense
 - Informs the user if they have exceeded their monthly budget
 - Gives the user the option to add another expense
 
-![screen print](.readme-assets/spreadsheet-image.PNG)
+![screen print](/readme-assets/spreadsheet-image.PNG)
 
 - Keeps track of your expenses, subtracting them from the monthly budget as the user adds them.
 - Each expense is dated, and in the correct category so the user can see what they are spending on.
@@ -74,7 +74,7 @@ I have tested my code by doing the following:
 
 - No bugs remaining
 
-### Validator Testing
+## Validator Testing
 
 - PEP8
     - No errors returned from https://pep8ci.herokuapp.com/

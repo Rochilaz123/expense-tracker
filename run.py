@@ -200,7 +200,8 @@ def main():
               f"The total you have spent on this category this month is " +
               f"£{round(category_total, 2)}\n")
         answer = input(Fore.WHITE +
-                       'Press + to add another expense, press enter to exit: \n')
+                       'Press + then enter to add another expense,' +
+                       ' or press enter to exit:\n')
         if answer == "+":
             continue
         else:
